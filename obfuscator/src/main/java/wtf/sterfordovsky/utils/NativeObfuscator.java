@@ -211,7 +211,7 @@ public class NativeObfuscator {
                     if (!classMethodFilter.shouldProcess(rawClassNode) ||
                             rawClassNode.methods.stream().noneMatch(method -> MethodProcessor.shouldProcess(method) &&
                                     classMethodFilter.shouldProcess(rawClassNode, method))) {
-                        //System.out.printf("ExternalGuard | Pashol naxui %s%n", rawClassNode.name);
+                        //System.out.printf("ExternalGuard | Don`t edit class %s%n", rawClassNode.name);
                         if (useAnnotations) {
                             ClassMethodFilter.cleanAnnotations(rawClassNode);
                             ClassWriter clearedClassWriter = new SafeClassWriter(metadataReader, Opcodes.ASM7);
@@ -229,7 +229,7 @@ public class NativeObfuscator {
                         return;
                     }
 
-                   // System.out.printf("ExternalGuard | Eby class %s%n", rawClassNode.name);
+                   // System.out.printf("ExternalGuard | Preprocessing %s%n", rawClassNode.name);
 
                     rawClassNode.methods.stream()
                             .filter(MethodProcessor::shouldProcess)
@@ -400,15 +400,15 @@ public class NativeObfuscator {
             resultLoaderClass.accept(classWriter);
             Util.writeEntry(out, loaderClassName + ".class", classWriter.toByteArray());
 
-            System.out.println("ExternalGuard | Bye-bye eblan! You lucky! Native built for 0 errors!!!");
+            System.out.println("ExternalGuard | Okay! Your jar success created!");
             Manifest mf = jar.getManifest();
             if (mf == null) {
                 mf = new Manifest();
             }
             Attributes mainAttributes = mf.getMainAttributes();
             mainAttributes.put(Attributes.Name.MANIFEST_VERSION, "1.0");
-            mainAttributes.putValue("SOSI", "PROTECTED BY EXTERNALGUARD [t.me/external_guard]");
-            mainAttributes.putValue("SOSI", "CODING BY STERFORDOVSKY [t.me/sterfordovsky]");
+            mainAttributes.putValue("NativeObfuscator", "PROTECTED BY JAVA-TO-NATIVE [github.com/bludnov/Java-To-Native]");
+            mainAttributes.putValue("NativeObfuscator", "CODE BY STERFORDOVSKY [github.com/bludnov]");
 
             out.putNextEntry(new ZipEntry(JarFile.MANIFEST_NAME));
             mf.write(out);
